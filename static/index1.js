@@ -4,19 +4,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // if (localStorage.getItem('User')){
     //     load_page('welcome');
     // }
-    
-    let button = document.getElementById('user-button');
-    button.addEventListener('click', buttonClick);
-   
 
-    function buttonClick()
-    {
-        let user = document.getElementById('user').value;
-        localStorage.setItem("User", user);
-        document.getElementById('welcome').innerHTML = `Hi, ${user}`
+    if (!localStorage.getItem('User')) {
+            $("#myModal").modal({backdrop: 'static', keyboard: false});
+            $('.modal-title').text("Please enter your username");
+        }
+
+    var boton = document.getElementById("modalButton")
+    boton.addEventListener("click",
+    () =>{
+            var user = document.getElementById('modalInput').value
+            document.getElementById('welcome').innerHTML = `Hi, ${user}`;
+        })
+        
+    //  $("#modalButton").on('click', () => {
+    //      var user = $('#modalInput').val();
+    //      document.getElementById('welcome').innerHTML = `Hi, ${user}`;
+    //      console.log("working")
+    //  })
+
+    const user = localStorage.getItem('User');
+    if (user){
+        document.getElementById('welcome').innerHTML = `Hi, ${user}`;
     }
-    let user = localStorage.getItem('User');
-    document.getElementById('welcome').innerHTML = `Hi, ${user}`
+
 
 });
 

@@ -3,9 +3,23 @@
 <script src="{{ url_for('static', filename='index1.js') }}"></script>
 {% endblock %}
 {%block body%}
-<center>
-    <input type="text" placeholder="Enter your name" id ="user">
-    <button id="user-button">Enter</button>
+<div class="modal fade" id="myModal" >
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title "></h4>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input id='modalInput' type='text' class="form-control w-50"  >
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button id='modalButton' type="button" class="btn btn-danger" data-dismiss="modal">Enter</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <h1 id="welcome"></h1>
-</center>
 {% endblock %}
