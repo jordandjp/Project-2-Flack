@@ -3,16 +3,24 @@
 <script src="{{ url_for('static', filename='index1.js') }}"></script>
 {% endblock %}
 {%block body%}
-<div class="modal fade" id="myModal" >
+<div class="grid-container">
+  <div class="logo"></div>
+  <div class="header">
+        <div class="flackname"></div>
+        <div class="username"><h1 id="welcome"></h1></div>
+  </div>
+  <div class="main">
+    <div class="modal fade" id="myModal" >
         <div class="modal-dialog">
-            <div class="modal-content ">
+            <div class="modal-content">
                 <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title "></h4>
+                <div class="modal-header bg-dark text-white">
+                    <h4 class="col-12 modal-title text-center"></h4>
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <input id='modalInput' type='text' class="form-control w-50"  >
+                    <h5 class='modal-description text-center'></h5><br>
+                    <input id='modalInput' type='text' class="form-control w-50 mx-auto"  >
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
@@ -21,5 +29,11 @@
             </div>
         </div>
     </div>
-    <h1 id="welcome"></h1>
+  </div>
+  <div class="footer"></div>
+  <div class="nav"></div>
+  <div class="newCh"></div>
+</div>
+
+
 {% endblock %}

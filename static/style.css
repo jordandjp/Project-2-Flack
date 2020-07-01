@@ -1,0 +1,47 @@
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+  
+  .grid-container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 0.3fr 1.7fr;
+    grid-template-rows: 0.2fr 2.6fr 0.2fr;
+    gap: 1px 1px;
+    grid-template-areas: "logo header" "nav main" "newCh footer";
+  }
+  
+  .logo { grid-area: logo; }
+  
+  .header {
+    display: grid;
+    grid-template-columns: 1.5fr 0.5fr;
+    grid-template-rows: 1fr;
+    gap: 1px 1px;
+    grid-template-areas: "flackname username";
+    grid-area: header;
+  }
+  
+  .flackname { grid-area: flackname; background-color: orange;}
+  
+  .username { grid-area: username; background-color: purple;}
+
+.logo { grid-area: logo; background-color: green; }
+
+.header { grid-area: header; background-color: brown;}
+
+.main { grid-area: main; background-color: blue;}
+
+.footer { grid-area: footer; background-color: yellow;}
+
+.nav { grid-area: nav; background-color: red;}
+
+.newCh { grid-area: newCh; background-color: rgb(149, 149, 153);}
+
+.modal-header {
+  text-align: center;
+}

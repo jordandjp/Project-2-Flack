@@ -1,13 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Start by loading first page.
-    // if (localStorage.getItem('User')){
-    //     load_page('welcome');
-    // }
-
     if (!localStorage.getItem('User')) {
             $("#myModal").modal({backdrop: 'static', keyboard: false});
-            $('.modal-title').text("Please enter your username");
+            $('.modal-title').text("Flack");
+            $('.modal-description').text("Please enter your username to start chatting");
         }
 
     var boton = document.getElementById("modalButton")
