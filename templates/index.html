@@ -4,36 +4,43 @@
 {% endblock %}
 {%block body%}
 <div class="grid-container">
-  <div class="logo"></div>
-  <div class="header">
-        <div class="flackname"></div>
-        <div class="username"><h1 id="welcome"></h1></div>
-  </div>
-  <div class="main">
-    <div class="modal fade" id="myModal" >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header bg-dark text-white">
-                    <h4 class="col-12 modal-title text-center"></h4>
-                </div>
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <h5 class='modal-description text-center'></h5><br>
-                    <input id='modalInput' type='text' class="form-control w-50 mx-auto"  >
-                </div>
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button id='modalButton' type="button" class="btn btn-danger" data-dismiss="modal">Enter</button>
-                </div>
+    <div class="main">
+        <div class="writer"></div>
+        <div class="messages"></div>
+    </div>
+    <div class="displayChannels">
+        <div class="channels px-2" id="channels">
+
+        </div>
+        <div class="nchannel">
+            <input id="newChannel" type="text">
+        </div>
+    </div>
+    <div class="header">
+        <div class="displayname"><h1 id="welcome"></h1></div>
+        <div class="brand"></div>
+    </div>
+    <div class="logo"><h1 class="center">Flask</h1></div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header bg-dark text-white">
+                <h4 class="col-12 modal-title text-center"></h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h5 class='modal-description text-center'></h5><br>
+                <input id='modalInput' type='text' class="form-control w-50 mx-auto"  >
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button id='modalButton' type="button" class="btn btn-danger" data-dismiss="modal">Enter</button>
             </div>
         </div>
     </div>
-  </div>
-  <div class="footer"></div>
-  <div class="nav"></div>
-  <div class="newCh"></div>
 </div>
-
 
 {% endblock %}
