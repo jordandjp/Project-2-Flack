@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Connect to websocket
+    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    
     // Storing information in client-side if it already haven't 
     // And prompting for username
 
@@ -7,12 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
             $("#myModal").modal({backdrop: 'static', keyboard: false});
             $('.modal-title').text("Flack");
             $('.modal-description').text("Please enter your username to start chatting");
+            
         }
 
     // Getting text input from modal
 
     var modalInput = document.getElementById("modalInput")
     var boton = document.getElementById("modalButton")
+    boton.disabled = true
 
     // Adding events (click, enter) to display input modal
 
@@ -21,15 +26,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function modalAction()
         {
-            var user = document.getElementById('modalInput').value
+            var user = modalInput.value;
+            localStorage.setItem('User', user)
             document.getElementById('welcome').innerHTML = `Hi, ${user}`;
         }
+
     function modalActionEnter(event)
     {
-        if (event.keyCode === 13)
+        if (document.getElementById('modalInput').value.length > 0)
         {
-            modalAction()
-            $('#myModal').modal('hide');
+            boton.disabled = false
+            if (event.keyCode === 13)
+            {
+                modalAction()
+                $('#myModal').modal('hide');
+            }
+        }
+        else
+        {
+            boton.disabled = true
         }
     }
         
@@ -54,11 +69,31 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.keyCode === 13)
         {
             event.preventDefault();
-            console.log("Funciona");
-            var divChannel = document.createElement("DIV");
-            divChannel.className = 'eachChannel';
-            divChannel.innerHTML = '#' + newChannel.value;
-            document.getElementById('channels').appendChild(divChannel);
+            c = document.getElementById("channels").children
+            let comprobacion = true
+
+            // Check if channel name already exists
+
+            for (i = 0; i < c.length; i++)
+            {
+                if (c[i].id === newChannel.value) 
+                {
+                alert(`Channel "${newChannel.value}" already exists, please use another name`)
+                comprobacion = false
+                break;
+                }
+            }
+            
+            if (comprobacion)
+            {
+                var divChannel = document.createElement("DIV");
+                divChannel.className = 'eachChannel';
+                divChannel.id = newChannel.value;
+                divChannel.innerHTML = '#' + newChannel.value;
+                document.getElementById('channels').appendChild(divChannel);
+                newChannel.value = "";
+            }
+               
         }
     }
 });
