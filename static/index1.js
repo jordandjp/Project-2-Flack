@@ -5,65 +5,106 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Storing information in client-side if it already haven't 
     // And prompting for username
+    socket.on('connect', () => { 
 
-    if (!localStorage.getItem('User')) {
+        if (!localStorage.getItem('User')) {
             $("#myModal").modal({backdrop: 'static', keyboard: false});
             $('.modal-title').text("Flack");
             $('.modal-description').text("Please enter your username to start chatting");
             
         }
 
-    // Getting text input from modal
-
-    var modalInput = document.getElementById("modalInput")
-    var boton = document.getElementById("modalButton")
-    boton.disabled = true
-
-    // Adding events (click, enter) to display input modal
-
-    boton.addEventListener("click", modalAction)
-    modalInput.addEventListener("keyup", modalActionEnter)
-
-    function modalAction()
-        {
-            var user = modalInput.value;
-            localStorage.setItem('User', user)
-            document.getElementById('welcome').innerHTML = `Hi, ${user}`;
-        }
-
-    function modalActionEnter(event)
-    {
-        if (document.getElementById('modalInput').value.length > 0)
-        {
-            boton.disabled = false
-            if (event.keyCode === 13)
-            {
-                modalAction()
-                $('#myModal').modal('hide');
-            }
-        }
         else
         {
-            boton.disabled = true
+            const user = localStorage.getItem('User');
+            socket.emit("add user", {"username": user})
+        }
+        // Getting text input from modal
+
+        var modalInput = document.getElementById("modalInput")
+        var boton = document.getElementById("modalButton")
+        boton.disabled = true
+
+        // Adding events (click, enter) to display input modal
+
+        boton.addEventListener("click", modalAction)
+        modalInput.addEventListener("keyup", modalActionEnter)
+
+        function modalAction()
+            {
+                var user = modalInput.value;
+                localStorage.setItem('User', user)
+                socket.emit("add user", {"username": user})
+            }
+
+        function modalActionEnter(event)
+        {
+            if (document.getElementById('modalInput').value.length > 0)
+            {
+                boton.disabled = false
+                if (event.keyCode === 13)
+                {
+                    modalAction()
+                    $('#myModal').modal('hide');
+                }
+            }
+            else
+            {
+                boton.disabled = true
+            }
+        }
+    });
+
+    // Getting and setting localstorage
+
+    socket.on('welcome user', data =>
+        {
+            document.getElementById('welcome').innerHTML = `Hi, ${data['username']}`;
+            // Figure out if the channel was saved from last time
+            if (!localStorage.getItem('selected_channel')) {
+                // No selected channel yet, set it to "general"
+                selected_channel = "general";
+                localStorage.setItem('selected_channel', selected_channel);
+                // Is the selected channel a private message channel?
+                localStorage.setItem('pm', 'no');
+            } else {
+                selected_channel = localStorage.getItem('selected_channel');
+            }
+            socket.emit('user connected', {'username': data['username'], 'selected_channel': selected_channel, 'pm': localStorage.getItem('pm')});
+        })
+
+    // List channels when user connected
+
+    socket.on('list channels', data => {
+        for (channel of data['channels'])
+        {
+            createChannel(channel)
+        }     
+    });
+
+    // Display the new channel
+    
+    socket.on('display new channel', data => 
+        {
+            createChannel(data["channel"])
+        })
+    
+        // Function to manipulate DOM and create channels
+
+    function createChannel(channel)
+    {
+        if (!document.getElementById(channel))
+        {
+            var divChannel = document.createElement("DIV");
+            divChannel.className = 'eachChannel';
+            divChannel.id = channel;
+            divChannel.innerHTML = '#' + channel;
+            document.getElementById('channels').appendChild(divChannel);
         }
     }
-        
-    //  $("#modalButton").on('click', () => {
-    //      var user = $('#modalInput').val();
-    //      document.getElementById('welcome').innerHTML = `Hi, ${user}`;
-    //      console.log("working")
-    //  })
-
-    const user = localStorage.getItem('User');
-    if (user){
-        document.getElementById('welcome').innerHTML = `Hi, ${user}`;
-    }
-
-    // Creating channel
 
     var newChannel = document.getElementById("newChannel");
     newChannel.addEventListener('keyup', enterfunction);
-
     function enterfunction(event)
     {
         if (event.keyCode === 13)
@@ -84,21 +125,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
-            if (comprobacion)
+            if (comprobacion && newChannel.value.length > 0 )
             {
-                var divChannel = document.createElement("DIV");
-                divChannel.className = 'eachChannel';
-                divChannel.id = newChannel.value;
-                divChannel.innerHTML = '#' + newChannel.value;
-                document.getElementById('channels').appendChild(divChannel);
-                newChannel.value = "";
-            }
-               
+                socket.emit('new channel', {'channel': newChannel.value});
+                newChannel.value = "";                
+            }   
         }
     }
+
+
 });
 
-
+    
 
 // Update text on popping state.
             window.onpopstate = e => {
