@@ -25,7 +25,7 @@
 .main {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1.9fr 0.1fr;
+  grid-template-rows: 1.8fr 0.2fr;
   gap: 1px 1px;
   grid-template-areas: "messages" "writer";
   grid-area: main;
@@ -33,7 +33,24 @@
 
 .writer { grid-area: writer; background-color: skyblue;}
 
-.messages { grid-area: messages; background-color: blue;}
+.messages { 
+  grid-area: messages; 
+  background-color: black;
+  overflow-y: auto;
+  /* max-height: calc(100vh - 125px); */
+  max-height: 82vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction:column-reverse;
+  align-items: flex-end;
+}
+
+.derecha 
+{
+  align-self: auto;
+  color: rgb(192, 192, 192);
+  padding: 0 3vh 0 3vh;
+}
 
 .displayChannels {
   width: auto;
