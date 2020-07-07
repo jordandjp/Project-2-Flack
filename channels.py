@@ -6,6 +6,7 @@ import json
 
 class Channel():
     allchannels = []
+    # allchannels_d = {}
     def __init__(self, channel, messages=[]):
         self.channel = channel
         self.messages = messages
@@ -19,4 +20,14 @@ class Channel():
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
-        sort_keys=True, indent=4)
+        sort_keys=True, indent=4, ensure_ascii=False)
+
+# if __name__ == "__main__":
+#     general = Channel("genéral")
+#     generaljson = general.toJSON()
+#     test = Channel("Test")
+#     print(general.toJSON())
+
+#     for x in range(1,10):
+#         Channel.allchannels_d[f"test{x}"] = Channel(str(x))
+#         print(Channel.allchannels_d[f"test{x}"].toJSON())

@@ -3,6 +3,8 @@ import os
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from channels import Channel
+# To solve character encoding errors
+from ftfy import fix_encoding
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
@@ -10,7 +12,6 @@ socketio = SocketIO(app)
 
 general = Channel("general")
 test = Channel("Test100")
-test1 = Channel("MñMóÓ")
 users = []
 
 @app.route("/")
@@ -21,8 +22,10 @@ def index():
 def newChannel(data):
     newChannel = (data['channel'])
     if not newChannel in Channel.allchannels:
-        Channel(newChannel)
-        emit("display new channel",  {"channel": newChannel}, broadcast=True)
+        # fixed_channel = fix_encoding(newChannel)
+        fixed_channel = newChannel.encode('latin1').decode('utf8')
+        Channel(fixed_channel)
+        emit("display new channel",  {"channel": fixed_channel}, broadcast=True)
     else:
         pass        
 

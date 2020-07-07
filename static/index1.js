@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (channel of data['channels'])
         {
             createChannel(channel)
-        }     
+        }
     });
 
     // Display the new channel
@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('display new channel', data => 
         {
             createChannel(data["channel"])
-            console.log("After socket: " + data["channel"])
         })
     
         // Function to manipulate DOM and create channels
@@ -128,36 +127,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (comprobacion && newChannel.value.length > 0 )
             {
-                console.log(newChannel.value)
                 socket.emit('new channel', {'channel': newChannel.value});
                 newChannel.value = "";                
             }   
         }
     }
-
-
 });
-
-    
-
-// Update text on popping state.
-            // window.onpopstate = e => {
-            //     const data = e.state;
-            //     document.title = data.title;
-            //     document.querySelector('#body').innerHTML = data.text;
-            // };
-
-            // // Renders contents of new page in main view.
-            // function load_page(name) {
-            //     const request = new XMLHttpRequest();
-            //     request.open('GET', `/${name}`);
-            //     request.onload = () => {
-            //         const response = request.responseText;
-            //         document.querySelector('#welcome').innerHTML = response;
-
-            //         // Push state to URL.
-            //         document.title = name;
-            //         history.pushState({'title': name, 'text': response}, name, name);
-            //     };
-            //     request.send();
-            // }
