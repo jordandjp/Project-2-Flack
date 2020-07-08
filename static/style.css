@@ -45,7 +45,7 @@
   align-items: flex-end;
 }
 
-.derecha 
+.msg 
 {
   align-self: auto;
   color: rgb(192, 192, 192);
@@ -93,5 +93,14 @@
 }
 
 .eachChannel {
-  color: yellow;
+  color: red;
+  background-color: white;
+  padding-right: 3vh;
+}
+.eachChannelDIV {
+  background-color: aquamarine;
+}
+
+.hide {
+  display: None;
 }

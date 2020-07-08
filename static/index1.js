@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+    var first_connect = true
     
     // Storing information in client-side if it already haven't 
     // And prompting for username
@@ -27,14 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Adding events (click, enter) to display input modal
 
-        boton.addEventListener("click", modalAction)
-        modalInput.addEventListener("keyup", modalActionEnter)
+        boton.addEventListener("click", modalAction);
+        modalInput.addEventListener("keyup", modalActionEnter);
 
         function modalAction()
             {
                 var user = modalInput.value;
-                localStorage.setItem('User', user)
-                socket.emit("add user", {"username": user})
+                localStorage.setItem('User', user);
+                socket.emit("add user", {"username": user});
             }
 
         function modalActionEnter(event)
@@ -53,10 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 boton.disabled = true
             }
         }
+        
     });
 
     // Getting and setting localstorage
-
     socket.on('welcome user', data =>
         {
             document.getElementById('welcome').innerHTML = `Hi, ${data['username']}`;
@@ -70,16 +72,27 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 selected_channel = localStorage.getItem('selected_channel');
             }
+    
             socket.emit('user connected', {'username': data['username'], 'selected_channel': selected_channel, 'pm': localStorage.getItem('pm')});
         })
 
     // List channels when user connected
 
     socket.on('list channels', data => {
-        for (channel of data['channels'])
+        if (first_connect)
         {
-            createChannel(channel)
+            for (const channel in data)
+            {
+                createChannel(channel)
+                for (const msg of data[channel]) {
+                    // Create msg
+                    createMessages(channel, msg)
+                }
+            }
+            first_connect = false
+            
         }
+        console.log(first_connect)
     });
 
     // Display the new channel
@@ -89,38 +102,52 @@ document.addEventListener('DOMContentLoaded', () => {
             createChannel(data["channel"])
         })
     
-        // Function to manipulate DOM and create channels
+    // Function to manipulate DOM and create channels
 
     function createChannel(channel)
     {
         if (!document.getElementById(channel))
         {
+            // Create div messages to contain all messages of channel
+            var divMessages = document.createElement("DIV");
+            divMessages.className = 'hide';
+            divMessages.id = 'msg-' + channel;
+            document.getElementById('id-messages').appendChild(divMessages);
+
+            // Create div channel
             var divChannel = document.createElement("DIV");
-            divChannel.className = 'eachChannel';
-            divChannel.id = channel;
-            divChannel.innerHTML = '#' + channel;
+            divChannel.className = 'eachChannelDIV';
+            divChannel.id = "DIV"+channel;
+            divChannel.innerHTML = `<a class="eachChannel" id="${channel}" href="#msg-${channel}" onclick="display(${channel});">#${channel}</a>`;
             document.getElementById('channels').appendChild(divChannel);
+            
         }
     }
 
+    function createMessages(channel, msg)
+    {
+        let divMessages = document.createElement("DIV");
+        divMessages.className = 'msg';
+        divMessages.innerHTML = `<h1>${msg}</h1>`
+        document.getElementById('msg-' + channel).appendChild(divMessages);
+    }
+
     var newChannel = document.getElementById("newChannel");
-    newChannel.addEventListener('keyup', enterfunction);
-    function enterfunction(event)
+    newChannel.addEventListener('keyup', channel_function);
+    function channel_function(event)
     {
         if (event.keyCode === 13)
         {
-            event.preventDefault();
             c = document.getElementById("channels").children
             let comprobacion = true
 
             // Check if channel name already exists
-
             for (i = 0; i < c.length; i++)
             {
-                if (c[i].id === newChannel.value) 
+                if (c[i].id === 'DIV'+newChannel.value) 
                 {
-                alert(`Channel "${newChannel.value}" already exists, please use another name`)
-                comprobacion = false
+                alert(`Channel "${newChannel.value}" already exists, please use another name`);
+                comprobacion = false;
                 break;
                 }
             }
@@ -132,4 +159,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }   
         }
     }
+
+    var new_message = document.getElementById("chat-box");
+    var button_message = document.getElementById('chat-button');
+    
+    button_message.addEventListener('click', message_function);
+
+    function message_function()
+    {
+        socket.emit('new_message', {'message': new_message.value});
+    }
+
 });
