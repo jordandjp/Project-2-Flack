@@ -8,21 +8,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     </head>
 <script>
+    var actual_channel = null
+    var actual_channel_name;
      function display(channel)
             {
-                canal = document.getElementById('msg-'+channel.id);
-                box_message = document.getElementById('id-messages').children
-
-                // Check if messages are display, if not => hide
-                for (message of box_message)
+                div_channel_msg = document.getElementById('msg-'+channel.id);
+                // box_message = document.getElementById('id-messages').children
+                if (actual_channel)
                 {
-                    if (message.classList != "hide")
-                    {
-                        message.classList.add("hide")
-                    }
+                    actual_channel.classList.add('hide')
                 }
+                // Check if messages are display, if not => hide
+                // for (message of box_message)
+                // {
+                //     if (message.classList != "hide")
+                //     {
+                //         message.classList.add("hide")
+                //     }
+                // }
                 // Remove hide to show the messages
-                canal.classList.remove("hide");
+                div_channel_msg.classList.remove("hide");
+                actual_channel = div_channel_msg
+                actual_channel_name = channel.id
+                console.log(actual_channel)
             }
 </script>
 <div class="grid-container">
@@ -31,12 +39,7 @@
             <input id="chat-box" type="text">
             <button id="chat-button" type="button">Send</button>
         </div>
-        <div class="messages" id="id-messages">
-            <div class="">
-                <!-- <div class="msg px-3">
-                    <h1>Hola primero</h1> -->
-            </div>
-                   
+        <div class="messages" id="id-messages"> 
         </div>
     </div>
     <div class="displayChannels">

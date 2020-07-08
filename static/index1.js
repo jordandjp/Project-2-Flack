@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
     var first_connect = true
-    
+
     // Storing information in client-side if it already haven't 
     // And prompting for username
     socket.on('connect', () => { 
@@ -164,10 +164,18 @@ document.addEventListener('DOMContentLoaded', () => {
     var button_message = document.getElementById('chat-button');
     
     button_message.addEventListener('click', message_function);
-
+    
     function message_function()
     {
-        socket.emit('new_message', {'message': new_message.value});
+        console.log(actual_channel_name)
+        console.log(new_message.value)
+        socket.emit('new_message', {'message': new_message.value, 'channel': actual_channel_name});
     }
 
+    socket.on('display new message', data => {
+        createMessages(data['channel'], data['message'])
+        console.log(data['channel']);
+        console.log(data['message']);
+        console.log(data);
+    })
 });

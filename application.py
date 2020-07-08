@@ -52,4 +52,8 @@ def addUser(data):
 @socketio.on("new_message")
 def newMessage(data):
     fixed_message = fix_encoding(data['message'])
+    fixed_channel = fix_encoding(data['channel'])
+    Channel.allobjects[fixed_channel].append(fixed_message)
+    emit("display new message", {'message': fixed_message, 'channel': fixed_channel}, broadcast=True)
+    
     
