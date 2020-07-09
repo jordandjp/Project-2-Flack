@@ -1,69 +1,61 @@
 """ 
-    Class Channel record, and control channels and messages 
+    Handler channels and messages 
 """
 
 import json
 
 class Channel():
-    allchannels = []
-    allobjects = {}
-    def __init__(self, channel, messages=[]):
-        self.channel = channel
-        self.__messages = messages
-        self.allchannels.append(self.channel)
-        self.allobjects[channel] = self.__messages
+    
+    # Variable to record all objects created
+    __allObjects = []
+    
+    def __init__(self, channel):
+        self.__channel = channel
+        self.__messages = []
+        self.__allObjects.append(self)
+    
+    @classmethod
+    def get_allObjects(cls):
+        return cls.__allObjects
+    
+    # Get all channels names
+    @classmethod
+    def get_allChannels(cls):
+        all_channels = []
+        for channel_object in Channel.get_allObjects():
+            all_channels.append(channel_object.get_channel())
+        return all_channels
 
-    def __str__(self):
-        return self
-
-    # def __repr__(self):
-    #     return str(self)
-
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, 
+    # Get all objects and return a dict ready to send to client-server 
+    @classmethod
+    def ready_to_emit(cls):
+        json_value = json.dumps(cls.__allObjects, default=lambda o: o.__dict__, 
         sort_keys=True, indent=4, ensure_ascii=False)
-        
-    def set_messages(self, message):
-        self.__messages.append(message)
+        ready_to_emit = json.loads(json_value)
+        return ready_to_emit
+    
+    @classmethod
+    def exist_channel(cls, channel):
+        for obj_channel in cls.get_allObjects():
+            if obj_channel.get_channel() == channel:
+                return obj_channel
+        return False
+    
+    def set_message(self, user, msg):
+        self.__messages.append({"user": user, "message": msg})
+        self.max_100msg() 
     
     def get_messages(self):
         return self.__messages
-        
-    # def fix_encode_channel(self):
-    #     self.channel = self.channel.encode('latin1').decode('utf8')
-    # def fix_encode_message()
+    
+    def get_channel(self):
+        return self.__channel
+    
+    # To storage only 100 msg at each channel 
+    def max_100msg(self):
+        if len(self.get_messages()) > 100:
+            del self.get_messages()[0: len(self.get_messages()) - 100]
         
 # Test clase
 if __name__ == "__main__":
-    general = Channel("genéral", ["Buenas", "Test", "Test3"])
-    general.set_messages("Que tal")
-    print(Channel.allobjects)
-    print(general.get_messages())
-#     generaljson = general.toJSON()
-    
-    # Channel.allobjects["test"] = Channel("test")
-    # Channel.allobjects["test"].set_messages("Testing")
-    # Channel.allobjects["test"].set_messages("Testing2")
-    general.set_messages("Hola")
-    Channel("test", ["test1", "test2"])
-    print(Channel.allobjects)
-    Channel.allobjects["test"].append("test3")
-    print("TEST: ", Channel.allobjects["test"])
-    print(general.toJSON())
-    generaljson = general.toJSON()
-    generaldict = json.loads(generaljson)
-    def toDict(self):
-        json_value = json.dumps(self, default=lambda o: o.__dict__, 
-        sort_keys=True, indent=4, ensure_ascii=False)
-        todict = json.loads(json_value)
-        return todict
-    print("DICT!: ", toDict(Channel.allobjects))
-    newdict = {"Channel:"}
-    print(generaljson)
-    # for i in Channel.allobjects:
-    #     print(Channel.allobjects[i].get_messages())
-
-
-#     for x in range(1,10):
-#         Channel.allobjects[f"test{x}"] = Channel(str(x))
-#         print(Channel.allobjects[f"test{x}"].toJSON())
+    pass

@@ -81,18 +81,16 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('list channels', data => {
         if (first_connect)
         {
-            for (const channel in data)
+            data.forEach((channel_object) => 
             {
-                createChannel(channel)
-                for (const msg of data[channel]) {
-                    // Create msg
-                    createMessages(channel, msg)
-                }
-            }
+                createChannel(channel_object["_Channel__channel"])
+                channel_object["_Channel__messages"].forEach((msg) => 
+                {
+                    createMessages(channel_object["_Channel__channel"], msg["message"], msg["user"])
+                })
+            })
             first_connect = false
-            
         }
-        console.log(first_connect)
     });
 
     // Display the new channel
@@ -124,11 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function createMessages(channel, msg)
+    function createMessages(channel, msg, user="")
     {
         let divMessages = document.createElement("DIV");
         divMessages.className = 'msg';
-        divMessages.innerHTML = `<h1>${msg}</h1>`
+        divMessages.innerHTML = `<h3>${user}: ${msg}</h3>`
         document.getElementById('msg-' + channel).appendChild(divMessages);
     }
 
@@ -167,15 +165,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function message_function()
     {
-        console.log(actual_channel_name)
-        console.log(new_message.value)
-        socket.emit('new_message', {'message': new_message.value, 'channel': actual_channel_name});
+        let user = localStorage.getItem('User')
+        socket.emit('new_message', {'message': new_message.value, 'channel': actual_channel_name, 'user': user});
     }
 
     socket.on('display new message', data => {
-        createMessages(data['channel'], data['message'])
-        console.log(data['channel']);
-        console.log(data['message']);
-        console.log(data);
+        createMessages(data['channel'], data['message'], data['user'])
+        channel_div = document.getElementById("msg-"+data['channel'])
+        if (channel_div.childNodes.length > 100)
+        {
+            channel_div.removeChild(channel_div.firstElementChild) 
+        }
     })
 });

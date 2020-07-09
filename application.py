@@ -9,15 +9,15 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
-general = Channel("general", ["Buenas", "Test", "Test3"])
-test = Channel("Test100", ["random", "random2", "random3"])
-users = []
+general = Channel("general")
+test = Channel("Test100")
 
-def toDict(self):
-        json_value = json.dumps(self, default=lambda o: o.__dict__, 
-        sort_keys=True, indent=4, ensure_ascii=False)
-        todict = json.loads(json_value)
-        return todict
+general.set_message(user="Owner", msg="Welcome to Flack!")
+
+for i in range(1, 105):
+    test.set_message(user="Robotest", msg=f"Message #{i}")
+
+users = []
 
 # To solve character encoding errors
 def fix_encoding(string):
@@ -30,9 +30,8 @@ def index():
 
 @socketio.on("new channel")
 def newChannel(data):
-    newChannel = (data['channel'])
-    if not newChannel in Channel.allchannels:
-        fixed_channel = fix_encoding(newChannel)
+    fixed_channel = fix_encoding(data['channel'])
+    if not Channel.exist_channel(fixed_channel):
         Channel(fixed_channel)
         emit("display new channel",  {"channel": fixed_channel}, broadcast=True)
     else:
@@ -41,7 +40,7 @@ def newChannel(data):
 @socketio.on("user connected")
 def listChannels(data):
     # lista = toDict(Channel.allobjects)
-    emit("list channels",  Channel.allobjects, broadcast=True)
+    emit("list channels",  Channel.ready_to_emit(), broadcast=True)
     
 @socketio.on("add user")
 def addUser(data):
@@ -53,7 +52,12 @@ def addUser(data):
 def newMessage(data):
     fixed_message = fix_encoding(data['message'])
     fixed_channel = fix_encoding(data['channel'])
-    Channel.allobjects[fixed_channel].append(fixed_message)
-    emit("display new message", {'message': fixed_message, 'channel': fixed_channel}, broadcast=True)
+    fixed_user = fix_encoding(data['user'])
+    if Channel.exist_channel(fixed_channel):
+        Channel.exist_channel(fixed_channel).set_message(msg=fixed_message, user=fixed_user)
+        emit("display new message", {'message': fixed_message, 'channel': fixed_channel, 'user': fixed_user}, broadcast=True)
+        
+    else:
+        return "Channel does not exist"
     
     
