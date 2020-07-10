@@ -67,6 +67,9 @@
   grid-area: channels; 
   background-color: olivedrab;
   font-size: 1.2em;
+  overflow-y: auto;
+  max-height: 82vh;
+  overflow-x: hidden;
 }
 
 .nchannel { grid-area: nchannel; background-color: orange;}
@@ -103,4 +106,40 @@
 
 .hide {
   display: None;
+}
+
+/* If u want personalize just one div scroll, put "classname" before ::-webkit... 
+    Example: .messages::-webkit-scrollbar */
+::-webkit-scrollbar {
+  width: 8px;     /* Tamaño del scroll en vertical */
+  height: 8px;    /* Tamaño del scroll en horizontal */
+}
+
+/* Ponemos un color de fondo y redondeamos las esquinas del thumb */
+::-webkit-scrollbar-thumb  {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+/* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b3b3b3;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Cambiamos el fondo cuando esté en active */
+::-webkit-scrollbar-thumb:active {
+  background-color: #999999;
+}
+
+/* Ponemos un color de fondo y redondeamos las esquinas del track */
+::-webkit-scrollbar-track{
+  background: #363636;
+  border-radius: 4px;
+}
+
+/* Cambiamos el fondo cuando esté en active o hover */
+::-webkit-scrollbar-track:hover, 
+::-webkit-scrollbar-track:active {
+background: #2ea2be;
 }

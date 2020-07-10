@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
             $("#myModal").modal({backdrop: 'static', keyboard: false});
             $('.modal-title').text("Flack");
             $('.modal-description').text("Please enter your username to start chatting");
-            
         }
 
         else
@@ -54,8 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 boton.disabled = true
             }
-        }
-        
+        } 
     });
 
     // Getting and setting localstorage
@@ -191,8 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let datetime_now = getTimeStamp()
             socket.emit('new_message', {'message': new_message.value, 'channel': selected_channel, 'user': user, 'datetime_now': datetime_now});
             new_message.value = ""
-        }
-        
+        }        
     }
 
     function message_enter_function(event)
