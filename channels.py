@@ -41,8 +41,8 @@ class Channel():
                 return obj_channel
         return False
     
-    def set_message(self, user, msg):
-        self.__messages.append({"user": user, "message": msg})
+    def set_message(self, user, msg, datetime_now="2000-1-1 12:00PM"):
+        self.__messages.append({"user": user, "message": msg, "datetime_now": datetime_now})
         self.max_100msg() 
     
     def get_messages(self):

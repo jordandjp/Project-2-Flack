@@ -54,8 +54,8 @@ def newMessage(data):
     fixed_channel = fix_encoding(data['channel'])
     fixed_user = fix_encoding(data['user'])
     if Channel.exist_channel(fixed_channel):
-        Channel.exist_channel(fixed_channel).set_message(msg=fixed_message, user=fixed_user)
-        emit("display new message", {'message': fixed_message, 'channel': fixed_channel, 'user': fixed_user}, broadcast=True)
+        Channel.exist_channel(fixed_channel).set_message(msg=fixed_message, user=fixed_user, datetime_now= data['datetime_now'])
+        emit("display new message", {'message': fixed_message, 'channel': fixed_channel, 'user': fixed_user, 'datetime_now': data['datetime_now']}, broadcast=True)
         
     else:
         return "Channel does not exist"

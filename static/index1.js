@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
     var first_connect = true
-
+    
     // Storing information in client-side if it already haven't 
     // And prompting for username
     socket.on('connect', () => { 
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 createChannel(channel_object["_Channel__channel"])
                 channel_object["_Channel__messages"].forEach((msg) => 
                 {
-                    createMessages(channel_object["_Channel__channel"], msg["message"], msg["user"])
+                    createMessages(channel_object["_Channel__channel"], msg["message"], msg["user"], msg["datetime_now"])
                 })
             })
             first_connect = false
@@ -122,16 +122,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function createMessages(channel, msg, user="")
+    function createMessages(channel, msg, user="", datetime_now)
     {
         let divMessages = document.createElement("DIV");
         divMessages.className = 'msg';
-        divMessages.innerHTML = `<h3>${user}: ${msg}</h3>`
+        divMessages.innerHTML = `<h3>${datetime_now} | ${user}: ${msg}</h3>`
         document.getElementById('msg-' + channel).appendChild(divMessages);
     }
 
     var newChannel = document.getElementById("newChannel");
     newChannel.addEventListener('keyup', channel_function);
+
     function channel_function(event)
     {
         if (event.keyCode === 13)
@@ -161,20 +162,60 @@ document.addEventListener('DOMContentLoaded', () => {
     var new_message = document.getElementById("chat-box");
     var button_message = document.getElementById('chat-button');
     
+    new_message.addEventListener('keyup', message_enter_function);
     button_message.addEventListener('click', message_function);
     
     function message_function()
     {
-        let user = localStorage.getItem('User')
-        socket.emit('new_message', {'message': new_message.value, 'channel': actual_channel_name, 'user': user});
+        if (new_message.value.length > 0)
+        {
+            let user = localStorage.getItem('User');
+            let datetime_now = getTimeStamp()
+            socket.emit('new_message', {'message': new_message.value, 'channel': actual_channel_name, 'user': user, 'datetime_now': datetime_now});
+            new_message.value = ""
+        }
+        
+    }
+
+    function message_enter_function(event)
+    {
+        if (event.keyCode === 13)
+        {
+            message_function()
+        }
     }
 
     socket.on('display new message', data => {
-        createMessages(data['channel'], data['message'], data['user'])
-        channel_div = document.getElementById("msg-"+data['channel'])
+        createMessages(data['channel'], data['message'], data['user'], data['datetime_now']);
+        channel_div = document.getElementById("msg-"+data['channel']);
         if (channel_div.childNodes.length > 100)
         {
-            channel_div.removeChild(channel_div.firstElementChild) 
+            channel_div.removeChild(channel_div.firstElementChild); 
         }
     })
+
+    function getTimeStamp() {
+        let now = new Date();
+        let dateyDate = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
+        let hr = now.getHours();
+        let min = ('0' + now.getMinutes()).slice(-2);   // https://stackoverflow.com/questions/8935414/getminutes-0-9-how-to-display-two-digit-numbers
+        let ampm = 'AM';
+        if (hr >= 12) {
+            hr = hr - 12;
+            ampm = 'PM';
+        }
+        return (dateyDate + ' ' + hr + ':' + min + ampm);
+    }
+
+    // function scroll_to_bottom() {
+    //     // Essentially, scrolls to the max scroll value that content would take without a scrollbars.
+    //     // This has the effect of scrolling all the way.  :-)
+    //     // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop
+    //     // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight
+
+    //     // This needs to be the element that has scroll properties, the div not the ul
+    //     const objDiv = document.getElementById("id-messages");
+    //     objDiv.scrollTop = objDiv.scrollHeight;
+    // }
+
 });

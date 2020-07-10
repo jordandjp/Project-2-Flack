@@ -10,7 +10,8 @@
 <script>
     var actual_channel = null
     var actual_channel_name;
-     function display(channel)
+
+    function display(channel)
             {
                 div_channel_msg = document.getElementById('msg-'+channel.id);
                 // box_message = document.getElementById('id-messages').children
@@ -18,18 +19,12 @@
                 {
                     actual_channel.classList.add('hide')
                 }
-                // Check if messages are display, if not => hide
-                // for (message of box_message)
-                // {
-                //     if (message.classList != "hide")
-                //     {
-                //         message.classList.add("hide")
-                //     }
-                // }
+
                 // Remove hide to show the messages
                 div_channel_msg.classList.remove("hide");
                 actual_channel = div_channel_msg
                 actual_channel_name = channel.id
+                // scroll_to_bottom()
             }
 </script>
 <div class="grid-container">
@@ -81,3 +76,4 @@
     </body>
 </html>
 <script src="{{ url_for('static', filename='index1.js') }}" charset="utf-8"></script>
+
