@@ -31,11 +31,11 @@
   grid-area: main;
 }
 
-.writer { grid-area: writer; background-color: skyblue;}
+.writer { grid-area: writer; background-color: #e5e5e5;}
 
 .messages { 
   grid-area: messages; 
-  background-color: black;
+  background-color: #e5e5e5;
   overflow-y: auto;
   /* max-height: calc(100vh - 125px); */
   max-height: 82vh;
@@ -65,14 +65,14 @@
 
 .channels { 
   grid-area: channels; 
-  background-color: olivedrab;
+  background-color: #e5e5e5;
   font-size: 1.2em;
   overflow-y: auto;
   max-height: 82vh;
   overflow-x: hidden;
 }
 
-.nchannel { grid-area: nchannel; background-color: orange;}
+.nchannel { grid-area: nchannel; background-color: #e5e5e5;}
 
 .header {
   display: grid;
@@ -83,11 +83,11 @@
   grid-area: header;
 }
 
-.brand { grid-area: brand; background-color: red;}
+.brand { grid-area: brand; background-color: #e5e5e5;}
 
-.displayname { grid-area: displayname; background-color: greenyellow;}
+.displayname { grid-area: displayname; background-color: #e5e5e5;}
 
-.logo { grid-area: logo; background-color: green;}
+.logo { grid-area: logo; background-color: #e5e5e5;}
 
 .center {
   /* text-align: center; */
@@ -97,11 +97,11 @@
 
 .eachChannel {
   color: red;
-  background-color: white;
+  background-color: #e5e5e5;
   padding-right: 3vh;
 }
 .eachChannelDIV {
-  background-color: aquamarine;
+  background-color: #e5e5e5;
 }
 
 .hide {
