@@ -1,11 +1,12 @@
-@charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Dosis&display=swap");
 * {
   /* box-sizing: border-box;
   padding: 0;
   margin: 0; */
-  font-family: "Dosis", sans-serif;
+  font-family: 'Dosis', sans-serif;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+@import "variables";
 
 .modal-header {
   text-align: center;
@@ -32,13 +33,14 @@
 
 .writer {
   grid-area: writer;
-  background-color: #e5e5e5;
+  background-color: $color_l_light;
 }
 
 .messages {
   grid-area: messages;
-  background-color: #e5e5e5;
+  background-color: $color_l_light;
   overflow-y: auto;
+
   /* max-height: calc(100vh - 125px); */
   max-height: 82vh;
   overflow-x: hidden;
@@ -49,7 +51,7 @@
 
 .msg {
   align-self: auto;
-  color: #14213d;
+  color: $color_l_dark;
   padding: 0 3vh 0 3vh;
 }
 
@@ -66,7 +68,7 @@
 
 .channels {
   grid-area: channels;
-  background-color: #e5e5e5;
+  background-color:$color_l_light;
   font-size: 1.2em;
   overflow-y: auto;
   max-height: 82vh;
@@ -75,7 +77,7 @@
 
 .nchannel {
   grid-area: nchannel;
-  background-color: #e5e5e5;
+  background-color: $color_l_light;
 }
 
 .header {
@@ -89,17 +91,17 @@
 
 .brand {
   grid-area: brand;
-  background-color: #e5e5e5;
+  background-color: $color_l_light;
 }
 
 .displayname {
   grid-area: displayname;
-  background-color: #e5e5e5;
+  background-color: $color_l_light;
 }
 
 .logo {
   grid-area: logo;
-  background-color: #e5e5e5;
+  background-color: $color_l_light;
 }
 
 .center {
@@ -109,13 +111,13 @@
 }
 
 .eachChannel {
-  color: #C82D38;
-  background-color: #e5e5e5;
+  color: $color_m_dark;
+  background-color: $color_l_light;
   padding-right: 3vh;
 }
 
 .eachChannelDIV {
-  background-color: #e5e5e5;
+  background-color: $color_l_light;
 }
 
 .hide {
@@ -124,38 +126,47 @@
 
 /* If u want personalize just one div scroll, put "classname" before ::-webkit... 
     Example: .messages::-webkit-scrollbar */
+
 ::-webkit-scrollbar {
   width: 8px;
+
   /* Tamaño del scroll en vertical */
   height: 8px;
+
   /* Tamaño del scroll en horizontal */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #14213d;
+  background: $color_l_dark;
+  ;
   border-radius: 4px;
-  /* Ponemos un color de fondo y redondeamos las esquinas del thumb */
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #0a111f;
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
-}
-::-webkit-scrollbar-thumb:active {
-  background-color: #000000;
+
+  &:hover {
+    background: #0a111f;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    background-color: $color_dark;
+  }
+/* Ponemos un color de fondo y redondeamos las esquinas del thumb */
+
 }
 
 /* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+
 /* Cambiamos el fondo cuando esté en active */
+
 /* Ponemos un color de fondo y redondeamos las esquinas del track */
+
 ::-webkit-scrollbar-track {
-  background: #FFFFFF;
+  background: $color_light;
   display: none;
   border-radius: 4px;
-}
-::-webkit-scrollbar-track:hover, ::-webkit-scrollbar-track:active {
-  background: #000000;
+
+  &:hover, &:active {
+    background: $color_dark;
+  }
 }
 
 /* Cambiamos el fondo cuando esté en active o hover */
-
-/*# sourceMappingURL=style.css.map */
