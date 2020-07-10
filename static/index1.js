@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
     var first_connect = true
-    
+    var selected_channel;
     // Storing information in client-side if it already haven't 
     // And prompting for username
     socket.on('connect', () => { 
@@ -67,13 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // No selected channel yet, set it to "general"
                 selected_channel = "general";
                 localStorage.setItem('selected_channel', selected_channel);
-                // Is the selected channel a private message channel?
-                localStorage.setItem('pm', 'no');
+                // // Is the selected channel a private message channel?
+                // localStorage.setItem('pm', 'no');
             } else {
                 selected_channel = localStorage.getItem('selected_channel');
             }
     
-            socket.emit('user connected', {'username': data['username'], 'selected_channel': selected_channel, 'pm': localStorage.getItem('pm')});
+            socket.emit('user connected', {'username': data['username']});
         })
 
     // List channels when user connected
@@ -83,14 +83,16 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             data.forEach((channel_object) => 
             {
-                createChannel(channel_object["_Channel__channel"])
+                createChannel(channel_object["_Channel__channel"]);
                 channel_object["_Channel__messages"].forEach((msg) => 
                 {
-                    createMessages(channel_object["_Channel__channel"], msg["message"], msg["user"], msg["datetime_now"])
+                    createMessages(channel_object["_Channel__channel"], msg["message"], msg["user"], msg["datetime_now"]);
                 })
             })
-            first_connect = false
+            first_connect = false;
         }
+        var channel_to_display = document.getElementById('msg-' + selected_channel);
+        channel_to_display.classList.remove('hide');
     });
 
     // Display the new channel
@@ -116,9 +118,25 @@ document.addEventListener('DOMContentLoaded', () => {
             var divChannel = document.createElement("DIV");
             divChannel.className = 'eachChannelDIV';
             divChannel.id = "DIV"+channel;
-            divChannel.innerHTML = `<a class="eachChannel" id="${channel}" href="#msg-${channel}" onclick="display(${channel});">#${channel}</a>`;
+            divChannel.innerHTML = `<a class="eachChannel" id="${channel}" href="#";">#${channel}</a>`;
             document.getElementById('channels').appendChild(divChannel);
-            
+
+            // Create onclick function to display channels
+            divChannel.firstChild.onclick = function () 
+            {
+                const div_channel_msg = document.getElementById('msg-'+channel);
+
+                actual_channel_name = document.getElementById('msg-'+selected_channel);
+                actual_channel_name.classList.add('hide')
+                
+        
+                // Remove hide to show the messages
+                div_channel_msg.classList.remove("hide");
+                selected_channel = channel
+
+                // Storage to remember channel
+                localStorage.setItem('selected_channel', selected_channel)
+            }
         }
     }
 
@@ -171,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             let user = localStorage.getItem('User');
             let datetime_now = getTimeStamp()
-            socket.emit('new_message', {'message': new_message.value, 'channel': actual_channel_name, 'user': user, 'datetime_now': datetime_now});
+            socket.emit('new_message', {'message': new_message.value, 'channel': selected_channel, 'user': user, 'datetime_now': datetime_now});
             new_message.value = ""
         }
         
@@ -206,16 +224,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return (dateyDate + ' ' + hr + ':' + min + ampm);
     }
-
-    // function scroll_to_bottom() {
-    //     // Essentially, scrolls to the max scroll value that content would take without a scrollbars.
-    //     // This has the effect of scrolling all the way.  :-)
-    //     // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop
-    //     // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight
-
-    //     // This needs to be the element that has scroll properties, the div not the ul
-    //     const objDiv = document.getElementById("id-messages");
-    //     objDiv.scrollTop = objDiv.scrollHeight;
-    // }
-
 });
