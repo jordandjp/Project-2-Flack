@@ -20,6 +20,7 @@
   grid-template-rows: 0.15fr 1.85fr;
   gap: 1px 1px;
   grid-template-areas: "logo header" "displayChannels main";
+  background-color: $color_light;
 }
 
 .main {
@@ -29,18 +30,65 @@
   gap: 1px 1px;
   grid-template-areas: "messages" "writer";
   grid-area: main;
+  // background-image: linear-gradient(to right, $color_ml_light, $color_l_light)
 }
 
 .writer {
   grid-area: writer;
+  display: grid;
   background-color: $color_l_light;
+  grid-template-columns: 1.9fr 0.1fr;
+  grid-template-rows: 1fr;
+  // gap: 1px 1px;
+  grid-template-areas:"input-msg button-msg" ;
+}
+
+.button-msg {
+  grid-area: button-msg;
+  display: flex;
+  justify-content: center;
+}
+
+.input-msg {
+  grid-area: input-msg;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+#chat-box {
+  background: #afb8bb6c;
+  text-align: right;
+  border-radius: 25px;
+  resize: none;
+  width: 90%;
+  height: 2.3rem;
+  align-self: center;
+  font-size: 1.4rem;
+  overflow-y: auto;
+  outline: none;
+}
+
+#chat-box:focus {
+  border-color: $color_l_dark;
+}
+
+#chat-button {
+  align-self: center;
+  // padding-left: 1vh;
+  border: none;
+  background: transparent;
+}
+
+.fa-paper-plane {
+  background: transparent;
+  color: $color_l_dark;
+  font-size: 1.4em;
 }
 
 .messages {
   grid-area: messages;
   background-color: $color_l_light;
   overflow-y: auto;
-
   /* max-height: calc(100vh - 125px); */
   max-height: 82vh;
   overflow-x: hidden;
@@ -84,7 +132,7 @@
   display: grid;
   grid-template-columns: 0.6fr 1.4fr;
   grid-template-rows: 1fr;
-  gap: 1px 1px;
+  // gap: 1px 1px;
   grid-template-areas: "brand displayname";
   grid-area: header;
 }
@@ -97,6 +145,8 @@
 .displayname {
   grid-area: displayname;
   background-color: $color_l_light;
+  text-align: right;
+  padding-right: 4vh;
 }
 
 .logo {
@@ -124,6 +174,15 @@
   display: None;
 }
 
+#modalButton {
+  background-color: $color_m_light;
+  color: $color_l_dark;
+}
+
+.modal-header {
+  background-color: $color_l_dark;
+  color: $color_m_light;
+}
 /* If u want personalize just one div scroll, put "classname" before ::-webkit... 
     Example: .messages::-webkit-scrollbar */
 
@@ -170,3 +229,61 @@
 }
 
 /* Cambiamos el fondo cuando esté en active o hover */
+
+.nchannel {
+  position: relative;
+  padding: 0 2vh 0 2vh;
+}
+
+.form__field {
+  width: 100%;
+  border: 0;
+  border-bottom: 0.3vh solid gray;
+  outline: 0;
+  font-size: 1.3rem;
+  color: $color_dark;
+  // padding: 2vh 0.5vh;
+  background: transparent;
+  transition: border-image 0.2s;
+  bottom: 100%;
+  margin: 2vh 0.2vh;
+
+  &::placeholder {
+    color: transparent;
+  }
+
+  &:placeholder-shown ~ .form__label {
+    font-size: 1.3rem;
+    cursor: text;
+    top: 20px;
+  }
+}
+
+.form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: gray;
+  margin-left: 0.3vh;
+}
+
+.form__field:focus {
+  ~ .form__label {
+    position: absolute;
+    top: 0;
+    display: none;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: $color_dark;
+    font-weight: 700;
+  }
+  // padding-bottom: 1vh;
+  // font-weight: 700;
+  border-width: 0.3vh;
+  border-image: linear-gradient(to right, $color_m_light $color_m_dark);
+  border-color: $color_m_dark;
+  border: 1;
+}
+

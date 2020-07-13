@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Getting and setting localstorage
     socket.on('welcome user', data =>
         {
-            document.getElementById('welcome').innerHTML = `Hi, ${data['username']}`;
+            document.getElementById('welcome').innerHTML = `Hi, ${data['username']}!`;
             // Figure out if the channel was saved from last time
             if (!localStorage.getItem('selected_channel')) {
                 // No selected channel yet, set it to "general"
@@ -189,6 +189,10 @@ document.addEventListener('DOMContentLoaded', () => {
             let datetime_now = getTimeStamp()
             socket.emit('new_message', {'message': new_message.value, 'channel': selected_channel, 'user': user, 'datetime_now': datetime_now});
             new_message.value = ""
+        }
+        if (new_message.value == "shushu")
+        {
+            // Falta
         }        
     }
 
@@ -216,7 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let min = ('0' + now.getMinutes()).slice(-2);   // https://stackoverflow.com/questions/8935414/getminutes-0-9-how-to-display-two-digit-numbers
         let ampm = 'AM';
         if (hr >= 12) {
-            hr = hr - 12;
+            if (hr != 12)
+            {
+                hr = hr - 12;
+            }
             ampm = 'PM';
         }
         return (dateyDate + ' ' + hr + ':' + min + ampm);
