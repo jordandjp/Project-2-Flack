@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Dosis&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Waiting+for+the+Sunrise");
 * {
   /* box-sizing: border-box;
   padding: 0;
@@ -91,12 +92,21 @@
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-end;
+  flex-wrap: wrap;
 }
 
 .msg {
-  align-self: auto;
   color: #14213d;
   padding: 0 3vh 0 3vh;
+  text-align: right;
+}
+
+.shushu {
+  font-family: "Waiting for the Sunrise", cursive;
+  font-size: 30px;
+  margin: 10px 50px;
+  letter-spacing: 6px;
+  font-weight: bold;
 }
 
 .displayChannels {

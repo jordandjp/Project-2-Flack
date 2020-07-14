@@ -181,19 +181,25 @@ document.addEventListener('DOMContentLoaded', () => {
     new_message.addEventListener('keyup', message_enter_function);
     button_message.addEventListener('click', message_function);
     
+
     function message_function()
     {
+        // feature shushu
+        if (new_message.value === "shushu")
+        {
+            typewriter(selected_channel)
+            new_message.value = ""
+            return false;
+        }
+        // end feature shushu
+
         if (new_message.value.length > 0)
         {
             let user = localStorage.getItem('User');
             let datetime_now = getTimeStamp()
             socket.emit('new_message', {'message': new_message.value, 'channel': selected_channel, 'user': user, 'datetime_now': datetime_now});
             new_message.value = ""
-        }
-        if (new_message.value == "shushu")
-        {
-            // Falta
-        }        
+        }  
     }
 
     function message_enter_function(event)

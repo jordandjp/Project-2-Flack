@@ -6,6 +6,7 @@
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Waiting+for+the+Sunrise'); // for feature shushu
 @import "variables";
 
 .modal-header {
@@ -95,13 +96,24 @@
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-end;
+  flex-wrap: wrap;
 }
 
 .msg {
-  align-self: auto;
   color: $color_l_dark;
   padding: 0 3vh 0 3vh;
+  text-align: right;
 }
+
+// feature shushu
+.shushu {
+    font-family: 'Waiting for the Sunrise', cursive; 
+    font-size:30px; 
+    margin: 10px 50px; 
+    letter-spacing: 6px; 
+    font-weight: bold;
+}
+// end feature shushu
 
 .displayChannels {
   width: auto;
