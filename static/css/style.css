@@ -225,7 +225,6 @@
 
 /* Cambiamos el fondo cuando esté en active o hover */
 .nchannel {
-  position: relative;
   padding: 0 2vh 0 2vh;
 }
 
@@ -242,22 +241,7 @@
   margin: 2vh 0.2vh;
 }
 .form__field::placeholder {
-  color: transparent;
-}
-.form__field:placeholder-shown ~ .form__label {
-  font-size: 1.3rem;
-  cursor: text;
-  top: 20px;
-}
-
-.form__label {
-  position: absolute;
-  top: 0;
-  display: block;
-  transition: 0.2s;
-  font-size: 1rem;
   color: gray;
-  margin-left: 0.3vh;
 }
 
 .form__field:focus {
@@ -265,15 +249,6 @@
   border-image: linear-gradient(to right, #fca311 #C82D38);
   border-color: #C82D38;
   border: 1;
-}
-.form__field:focus ~ .form__label {
-  position: absolute;
-  top: 0;
-  display: none;
-  transition: 0.2s;
-  font-size: 1rem;
-  color: #000000;
-  font-weight: 700;
 }
 
 /*# sourceMappingURL=style.css.map */

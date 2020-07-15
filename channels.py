@@ -56,6 +56,6 @@ class Channel():
         if len(self.get_messages()) > 100:
             del self.get_messages()[0: len(self.get_messages()) - 100]
         
-# Test clase
+# Tests here
 if __name__ == "__main__":
     pass

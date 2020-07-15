@@ -243,7 +243,6 @@
 /* Cambiamos el fondo cuando esté en active o hover */
 
 .nchannel {
-  position: relative;
   padding: 0 2vh 0 2vh;
 }
 
@@ -261,36 +260,12 @@
   margin: 2vh 0.2vh;
 
   &::placeholder {
-    color: transparent;
+    color: gray;
   }
-
-  &:placeholder-shown ~ .form__label {
-    font-size: 1.3rem;
-    cursor: text;
-    top: 20px;
-  }
-}
-
-.form__label {
-  position: absolute;
-  top: 0;
-  display: block;
-  transition: 0.2s;
-  font-size: 1rem;
-  color: gray;
-  margin-left: 0.3vh;
 }
 
 .form__field:focus {
-  ~ .form__label {
-    position: absolute;
-    top: 0;
-    display: none;
-    transition: 0.2s;
-    font-size: 1rem;
-    color: $color_dark;
-    font-weight: 700;
-  }
+
   // padding-bottom: 1vh;
   // font-weight: 700;
   border-width: 0.3vh;
