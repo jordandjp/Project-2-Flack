@@ -1,6 +1,6 @@
 import os, json
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 from channels import Channel
 
@@ -17,8 +17,8 @@ general.set_message(user="Owner", msg="Welcome to Flack!")
 for i in range(1, 105):
     test.set_message(user="Robotest", msg=f"Message #{i}")
 
-users = []
-
+users_sid = {}
+    
 # To solve character encoding errors
 def fix_encoding(string):
     string_fixed = string.encode('latin1').decode('utf-8')
@@ -39,13 +39,12 @@ def newChannel(data):
 
 @socketio.on("user connected")
 def listChannels(data):
-    # lista = toDict(Channel.allobjects)
     emit("list channels",  Channel.ready_to_emit(), broadcast=True)
     
 @socketio.on("add user")
 def addUser(data):
     username = fix_encoding(data['username'])
-    users.append(username)
+    users_sid[request.sid] = username
     emit("welcome user", {"username": username})
 
 @socketio.on("new_message")
@@ -60,4 +59,11 @@ def newMessage(data):
     else:
         return "Channel does not exist"
     
+@socketio.on("disconnect")
+def user_disconnect():
+    try:
+        users_sid.pop(request.sid)
+    except Exception as e:
+        print("Does not exist that sid in users_sid")
+        return e        
     

@@ -1,9 +1,7 @@
   // set up text to print, each item in array is new line
     var aText = new Array(
-                        "Te amo muuchooo mi bonita ♥", 
-                        "y a shu tambien juju",
-                        "",
-                        "Att: Tu cientifico loco xd"
+                        "Probando writing style",
+                        ";)"
                         );
     var iSpeed = 100; // time delay of print out
     var iIndex = 0; // start printing array at this posision
